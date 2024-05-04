@@ -15,3 +15,7 @@
 ## useReducer
 
 ### useReducer는 각 상태를 스위치하게되는 경우 많이 사용하게되는 문법으로 boolean 타입이면 true false 성별이면 남성 여성 이런식의 타입인 값을 사용하게될때 유용하게 사용을 할듯하다. 텍스트 값이나 숫자 값에는 별로인듯하다.
+
+## SampleContext
+
+### useReducer를 처음 사용한 ReducerSample을 더 사용하기 편리하고 관리하기 편하게 작성하는 것이다. Context안에 상태를 조회시 그리고 새로운 액션을 dispatch 해야하는경우 자동완성이 되어서 개발 생산성을 많이 높여준다.
