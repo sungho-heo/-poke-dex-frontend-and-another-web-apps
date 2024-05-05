@@ -22,4 +22,4 @@
 
 ## Redux
 
-### CounterContainer
+### CounterContainer => Redux를 사용해서 Counter기능 웹을 구현 그냥 Counter 를 일일히 type설정하고 interface를 설정할떄보다 생산성이 빨라짐. 각 모듈에 맞춰서 관리하다보니 코드 가독성도 좋아짐.
