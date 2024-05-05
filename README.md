@@ -19,3 +19,7 @@
 ## SampleContext
 
 ### useReducer를 처음 사용한 ReducerSample을 더 사용하기 편리하고 관리하기 편하게 작성하는 것이다. Context안에 상태를 조회시 그리고 새로운 액션을 dispatch 해야하는경우 자동완성이 되어서 개발 생산성을 많이 높여준다.
+
+## Redux
+
+### CounterContainer

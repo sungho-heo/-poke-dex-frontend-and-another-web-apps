@@ -1,13 +1,8 @@
 import React from "react";
-import ReducerSample from "./ReducerSample";
-import { SampleProvider } from "./SampleContext";
+import CounterContainer from "./containers/CounterContainer";
 
 const App: React.FC = () => {
-  return (
-    <SampleProvider>
-      <ReducerSample />
-    </SampleProvider>
-  );
+  return <CounterContainer />;
 };
 
 export default App;
