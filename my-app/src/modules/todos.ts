@@ -9,7 +9,7 @@ let nextId = 1; // 새로운 항목을 추가할시 사용할 고유 ID값.
 export const addTodo = (text: string) => ({
   type: ADD_TODO,
   payload: {
-    id: nextId + 1,
+    id: nextId++,
     text,
   },
 });
@@ -41,7 +41,7 @@ export type Todo = {
 export type TodosState = Todo[];
 
 // 초기 상태 선언
-const initialState: TodoState = [];
+const initialState: TodosState = [];
 
 // 리듀서 작성
 function todos(
