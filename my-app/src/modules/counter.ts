@@ -1,9 +1,9 @@
 import { createAction, ActionType, createReducer } from "typesafe-actions";
 
 // 액션 타입을 미리 선언
-const increase = createAction("counter/INCREASE")();
-const decrease = createAction("counter/DECREASE")();
-const increaseBy = createAction("counter/INCRASE_BY")<number>();
+export const increase = createAction("counter/INCREASE")();
+export const decrease = createAction("counter/DECREASE")();
+export const increaseBy = createAction("counter/INCRASE_BY")<number>();
 
 // // 액션 생성함수 선언.
 // export const increase = createAction(INCREASE)();
