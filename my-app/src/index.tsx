@@ -1,13 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { legacy_createStore } from "redux";
+import { legacy_createStore, applyMiddleware } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./modules";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const store = legacy_createStore(rootReducer);
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: true, // 기본은 true로 설정되어있다. 개발자 도구의 사용 여부를 정한다.
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
