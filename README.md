@@ -35,3 +35,7 @@
 ### 똑같이 typesafe-actions를 사용해서 리펙토링을 진행하였음. counter에 비해서 줄어든것은 큰게 없는것 같지만 확실히 많은 코드를 작성한것을 줄이는데 좋은듯함. 필요하다면 사용하는게 좋을듯함.
 
 ### todos폴더를 생성 todos.ts 모듈파일 코드길이가 길어서 각각 하나의 기능을 하는 todos폴더에 reducer,types,actions파일등을 만들어서 모듈화함. 가독성이 더 좋아졌다. index.ts는 해당 폴더의 모듈등을 기본적으로 읽어오게끔 default모듈 파일역할인것 같다. 더 조사해봐야함.
+
+## gihub
+
+### github api를 사용하면서 thunk에 대해서 middleware 사용하는데 전체적으로 Types,counter 설계와 비슷하나 middleware인 thunk를 사용해서 구현중입니다.
