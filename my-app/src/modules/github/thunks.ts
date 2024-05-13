@@ -13,7 +13,7 @@ export function getUserProfileThunk(
     try {
       const userProfile = await getUserProfile(username);
       dispatch(success(userProfile));
-    } catch (e) {
+    } catch (e: any) {
       dispatch(failure(e));
     }
   };
