@@ -1,14 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { legacy_createStore as createStore, applyMiddleware } from "redux";
-import { thunk } from "redux-thunk";
-import rootReducer from "./modules";
+import { configureStore } from "@reduxjs/toolkit";
+import createSagaMiddleware from "redux-saga";
+import rootReducer, { rootSaga } from "./modules";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const sagaMiddleware = createSagaMiddleware();
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(sagaMiddleware),
+});
+
+sagaMiddleware.run(rootSaga);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
