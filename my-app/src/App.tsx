@@ -1,5 +1,5 @@
 import React from "react";
-import GithubProfileLoader from "./components/GithubProfileLoader";
+import GithubProfileLoader from "./containers/GithubProfileLoader";
 
 const App: React.FC = () => {
   return <GithubProfileLoader />;

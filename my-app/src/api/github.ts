@@ -1,11 +1,11 @@
 import axios from "axios";
 
 export async function getUserProfile(username: string) {
-  // Generic을 통해서 응답 데이터의 타입을 설정할수있다.
+  // Generic 을 통해 응답 데이터의 타입을 설정 할 수 있습니다.
   const response = await axios.get<GithubProfile>(
     `https://api.github.com/users/${username}`
   );
-  return response.data; // 데이터 값을 바로 반환하도록함.
+  return response.data; // 데이터 값을 바로 반환하도록 처리합니다.
 }
 
 export interface GithubProfile {
@@ -13,11 +13,11 @@ export interface GithubProfile {
   id: number;
   node_id: string;
   avatar_url: string;
-  gravatar_url: string;
+  gravatar_id: string;
   url: string;
   html_url: string;
-  follwers_url: string;
-  follwing_url: string;
+  followers_url: string;
+  following_url: string;
   gists_url: string;
   starred_url: string;
   subscriptions_url: string;
@@ -36,8 +36,8 @@ export interface GithubProfile {
   bio: string;
   public_repos: number;
   public_gists: number;
-  follwers: number;
-  follwing: number;
+  followers: number;
+  following: number;
   created_at: Date;
   updated_at: Date;
 }
