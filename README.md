@@ -39,3 +39,7 @@
 ## gihub
 
 ### github api를 사용하면서 thunk에 대해서 middleware 사용하는데 전체적으로 Types,counter 설계와 비슷하나 middleware인 thunk를 사용해서 구현중입니다.
+
+## redux-thunk
+
+### 나쁘지 않은 미들웨어 라이브러리이나 현재 redux-tookit으로 변경중이며 redux-thunk에 사용되는 것은 거의 권장 하지 않는다고한다.
