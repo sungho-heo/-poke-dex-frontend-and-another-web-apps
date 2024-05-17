@@ -11,7 +11,7 @@ function* getUserProfileSaga(
       action.payload
     );
     yield put(getUserProfileAsync.success(userProfile));
-  } catch (e) {
+  } catch (e: any) {
     yield put(getUserProfileAsync.failure(e));
   }
 }

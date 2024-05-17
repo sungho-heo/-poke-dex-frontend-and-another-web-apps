@@ -1,5 +1,5 @@
 import { UnknownAction } from "redux";
-import { getType } from "typesafe-actions";
+import { getType, AsyncActionCreatorBuilder } from "typesafe-actions";
 
 export type AsyncState<T, E = any> = {
   data: T | null;
@@ -31,7 +31,7 @@ export const asyncState = {
   }),
 };
 
-type AnyAsyncActionCreator = AsyncActionCreator<any, any, any>;
+type AnyAsyncActionCreator = AsyncActionCreatorBuilder<any, any, any>;
 export function createAsyncReducer<
   S,
   AC extends AnyAsyncActionCreator,
