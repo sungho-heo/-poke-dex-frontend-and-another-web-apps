@@ -43,3 +43,7 @@
 ## redux-thunk
 
 ### 나쁘지 않은 미들웨어 라이브러리이나 현재 redux-tookit으로 변경중이며 redux-thunk에 사용되는 것은 거의 권장 하지 않는다고한다.
+
+## redux-saga
+
+### reudux-thunk보다 쉬운 방법인듯하다. saga를 사용하는것은 나쁜 방법은 아니나. 현재 github action을 작성한 모듈에서 undifinded로 했던것을 any로 변경해서 모든 타입을 했으나, saga를 사용하기위해서는 타입을 미리 지정을 해줘야해서 이래저래 다른 api를 불러오게 된다면 재사용성에서 좋지않은 리펙토링인듯하다. 좀더 saga에 알아봐야하겠지만.
