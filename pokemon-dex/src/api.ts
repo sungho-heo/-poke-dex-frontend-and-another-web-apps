@@ -3,6 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "https://pokeapi.co/api/v2",
 });
+
 interface PokemonListResponse {
   results: {
     name: string;
@@ -10,18 +11,20 @@ interface PokemonListResponse {
   }[];
 }
 
-interface PokemonData {
+export interface PokemonType {
+  type: {
+    name: string;
+  };
+}
+
+export interface PokemonData {
   name: string;
   sprites: {
     front_default: string;
   };
   height: number;
   weight: number;
-  types: {
-    type: {
-      name: string;
-    };
-  };
+  types: PokemonType[];
 }
 
 export const fetchPokemonList = async (
