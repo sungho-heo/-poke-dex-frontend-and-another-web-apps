@@ -1,6 +1,27 @@
 import React from "react";
 import { useQuery, useQueries, UseQueryResult } from "@tanstack/react-query";
 import { fetchPokemonList, fetchPokemon, PokemonData } from "../api";
+import styled from "styled-components";
+
+const Container = styled.div`
+  padding: 20px;
+  text-align: center;
+`;
+
+const PokemonCard = styled.div`
+  border: 2.5px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+`;
+
+const PokemonImage = styled.img`
+  width: 100px;
+  height: 100px;
+`;
 
 const PokemonList: React.Fc = () => {
   const {
@@ -21,28 +42,29 @@ const PokemonList: React.Fc = () => {
     })),
   }) as UseQueryResult<PokemonData>[];
 
-  if (listLoading) return <div>...Loading</div>;
-  if (listError instanceof Error) return <div>Error: {listError.message}</div>;
+  if (listLoading) return <Container>...Loading</Container>;
+  if (listError instanceof Error)
+    return <Container>Error: {listError.message}</Container>;
 
   return (
-    <div>
+    <Container>
       {pokemonQueries.map((query, index) => {
         const { data, error, isLoading } = query;
 
-        if (isLoading) return <div key={index}>Loading...</div>;
+        if (isLoading) return <PokemonCard key={index}>Loading...</PokemonCard>;
         if (error instanceof Error)
-          return <div key={index}>Error: {error.message}</div>;
+          return <PokemonCard key={index}>Error: {error.message}</PokemonCard>;
         return (
-          <div key={data?.name}>
+          <PokemonCard key={data?.name}>
             <h2>{data?.name}</h2>
-            <img src={data?.sprites.front_default} alt={data?.name} />
+            <PokemonImage src={data?.sprites.front_default} alt={data?.name} />
             <p>
               Type:{data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
             </p>
-          </div>
+          </PokemonCard>
         );
       })}
-    </div>
+    </Container>
   );
 };
 
