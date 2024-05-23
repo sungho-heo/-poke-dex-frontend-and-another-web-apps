@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery, useQueries, UseQueryResult } from "@tanstack/react-query";
 import { fetchPokemonList, fetchPokemon, PokemonData } from "../api";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   padding: 20px;
@@ -21,9 +22,10 @@ const PokemonCard = styled.div`
 const PokemonImage = styled.img`
   width: 100px;
   height: 100px;
+  cursor: pointer;
 `;
 
-const PokemonList: React.Fc = () => {
+const PokemonList: React.FC = () => {
   const {
     data: listData,
     error: listError,
@@ -57,7 +59,12 @@ const PokemonList: React.Fc = () => {
         return (
           <PokemonCard key={data?.name}>
             <h2>{data?.name}</h2>
-            <PokemonImage src={data?.sprites.front_default} alt={data?.name} />
+            <Link to={`/pokemon/${data?.name}`}>
+              <PokemonImage
+                src={data?.sprites.front_default}
+                alt={data?.name}
+              />
+            </Link>
             <p>
               Type:{data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
             </p>
