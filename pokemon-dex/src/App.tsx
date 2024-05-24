@@ -9,6 +9,7 @@ import "./App.css";
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      {/* 라우터 설정. */}
       <Router>
         <div className="App">
           <h1>Pokemon Dex</h1>

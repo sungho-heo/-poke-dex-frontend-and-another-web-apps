@@ -4,6 +4,7 @@ const api = axios.create({
   baseURL: "https://pokeapi.co/api/v2",
 });
 
+// 포켓몬 여러마리 데이터와 포켓몬의 상세 데이터 및 포켓몬 타입값의 타입 설정.
 interface PokemonListResponse {
   results: {
     name: string;

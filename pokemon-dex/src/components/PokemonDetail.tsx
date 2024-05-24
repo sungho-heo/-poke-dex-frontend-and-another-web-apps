@@ -3,13 +3,9 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPokemon } from "../api";
 import styled from "styled-components";
+import { Container } from "../styles/CommonStyles";
 
 // css세팅
-const Container = styled.div`
-  padding: 20px;
-  text-align: center;
-`;
-
 const DetailCard = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
