@@ -4,6 +4,7 @@ import { fetchPokemonList, fetchPokemon, PokemonData } from "../api";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Container, GridContainer } from "../styles/CommonStyles";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 // Css 세팅
 
@@ -33,6 +34,7 @@ const PokemonImage = styled.img`
 // 포켓몬 데이터 가져오기 20번까지
 const PokemonList: React.FC = () => {
   const [searchPokemon, setSearchPokemon] = useState<string>("");
+  const [likes, setLikes] = useLocalStorage<string[]>("likes", []);
 
   const {
     data: listData,
@@ -58,6 +60,14 @@ const PokemonList: React.FC = () => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchPokemon(event.target.value);
+  };
+
+  const toggleLike = (name: string) => {
+    setLikes((prevLikes) =>
+      prevLikes.includes(name)
+        ? prevLikes.filter((like) => like !== name)
+        : [...prevLikes, name]
+    );
   };
 
   const filterPokemonQueries = searchPokemon
@@ -88,6 +98,9 @@ const PokemonList: React.FC = () => {
             return (
               <PokemonCard key={index}>Error: {error.message}</PokemonCard>
             );
+
+          const isLike = likes.includes(data?.name || "");
+
           return (
             // data?해당 뜻은 포켓몬 api로부터 데이터를 못가져올경우 undifinded로 가져오게하기위해서 즉 에리가 발생하기위해서임.
             <PokemonCard key={data?.name}>
@@ -102,6 +115,9 @@ const PokemonList: React.FC = () => {
                 Type:
                 {data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
               </p>
+              <button onClick={() => toggleLike(data?.name || "")}>
+                {isLike ? "즐겨찾기 삭제" : "즐겨찾기 추가"}
+              </button>
             </PokemonCard>
           );
         })}
