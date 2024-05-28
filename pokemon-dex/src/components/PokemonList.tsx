@@ -2,12 +2,19 @@ import React, { useState } from "react";
 import { useQuery, useQueries, UseQueryResult } from "@tanstack/react-query";
 import { fetchPokemonList, fetchPokemon, PokemonData } from "../api";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 import { Container, GridContainer } from "../styles/CommonStyles";
 import useLocalStorage from "../hooks/useLocalStorage";
 
-// Css 세팅
+// isLike type 정의
+interface LikeButtonProps {
+  isLike: boolean;
+}
 
+// Css 세팅
 const SearchInput = styled.input`
   padding: 10px;
   margin: 20px 0;
@@ -20,15 +27,23 @@ const PokemonCard = styled.div`
   border: 2.5px solid #ccc;
   border-radius: 10px;
   padding: 20px;
-  margin: 10px;
   width: 200px;
   text-align: center;
 `;
 
 const PokemonImage = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   cursor: pointer;
+`;
+
+const FavoriteButton = styled.button<LikeButtonProps>`
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  color: ${(props) => (props.isLike ? "gold" : "grey")};
+  font-size: 1.5rem;
 `;
 
 // 포켓몬 데이터 가져오기 20번까지
@@ -104,6 +119,12 @@ const PokemonList: React.FC = () => {
           return (
             // data?해당 뜻은 포켓몬 api로부터 데이터를 못가져올경우 undifinded로 가져오게하기위해서 즉 에리가 발생하기위해서임.
             <PokemonCard key={data?.name}>
+              <FavoriteButton
+                isLike={isLike}
+                onClick={() => toggleLike(data?.name || "")}
+              >
+                <FontAwesomeIcon icon={isLike ? solidStar : regularStar} />
+              </FavoriteButton>
               <h2>{data?.name}</h2>
               <Link to={`/pokemon/${data?.name}`}>
                 <PokemonImage
@@ -115,9 +136,6 @@ const PokemonList: React.FC = () => {
                 Type:
                 {data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
               </p>
-              <button onClick={() => toggleLike(data?.name || "")}>
-                {isLike ? "즐겨찾기 삭제" : "즐겨찾기 추가"}
-              </button>
             </PokemonCard>
           );
         })}
