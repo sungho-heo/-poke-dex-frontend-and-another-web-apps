@@ -2,13 +2,13 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/auth";
 
-interface SignupParams {
+export interface SignupParams {
   nickname: string;
   email: string;
   password: string;
 }
 
-interface AuthResponse {
+export interface AuthResponse {
   token: string;
 }
 

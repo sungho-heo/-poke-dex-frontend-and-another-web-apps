@@ -1,23 +1,15 @@
 import React, { useState } from "react";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { signup } from "../api/auth";
-
-interface SignupParams {
-  nickname: string;
-  email: string;
-  password: string;
-}
-
-interface AuthResponse {
-  token: string;
-}
+import { useMutation } from "@tanstack/react-query";
+import { signup, SignupParams, AuthResponse } from "../api/auth";
 
 const Signup: React.FC = () => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const mutation: UseMutationResult<AuthResponse, Error, SignupParams> =
-    useMutation(signup);
+
+  const mutation = useMutation<AuthResponse, Error, SignupParams>({
+    mutationFn: signup,
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,3 +45,5 @@ const Signup: React.FC = () => {
     </div>
   );
 };
+
+export default Signup;
