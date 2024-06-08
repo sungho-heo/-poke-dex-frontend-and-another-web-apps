@@ -48,7 +48,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
   #root{
-      max-width: 1280px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
@@ -83,6 +83,10 @@ const NavLink = styled(Link)`
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
+`;
+
+const Main = styled.main`
+  padding: 20px;
 `;
 
 export default App;

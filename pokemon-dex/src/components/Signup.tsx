@@ -18,7 +18,7 @@ const Signup: React.FC = () => {
 
   return (
     <div>
-      <h2>Join</h2>
+      <h2>Signup</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -38,10 +38,10 @@ const Signup: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Join</button>
+        <button type="submit">Signup</button>
       </form>
       {mutation.isError && <p>Error: {mutation.error.message}</p>}
-      {mutation.isSuccess && <p>Join successful!</p>}
+      {mutation.isSuccess && <p>Signup successful!</p>}
     </div>
   );
 };
