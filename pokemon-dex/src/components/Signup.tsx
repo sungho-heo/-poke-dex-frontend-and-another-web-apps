@@ -1,5 +1,15 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import styled from "styled-components";
+import {
+  inputContainer as SignupContainer,
+  pageTitle as Title,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+} from "../styles/CommonStyles";
+
 import { signup, SignupParams, AuthResponse } from "../api/auth";
 
 const Signup: React.FC = () => {
@@ -17,32 +27,41 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
+    <SignupContainer>
+      <Title>Signup</Title>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nickname"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Signup</button>
+        <FormGroup>
+          <Label htmlFor="Nickname">Nickname</Label>
+          <Input
+            type="text"
+            placeholder="Nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="Email">Email</Label>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="Password">Password</Label>
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormGroup>
+        <Button type="submit">Signup</Button>
       </form>
       {mutation.isError && <p>Error: {mutation.error.message}</p>}
       {mutation.isSuccess && <p>Signup successful!</p>}
-    </div>
+    </SignupContainer>
   );
 };
 
