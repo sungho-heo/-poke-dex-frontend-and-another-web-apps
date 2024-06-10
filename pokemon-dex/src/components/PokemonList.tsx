@@ -57,7 +57,7 @@ const PokemonList: React.FC = () => {
     isLoading: listLoading,
   } = useQuery({
     queryKey: ["pokemonList"],
-    queryFn: () => fetchPokemonList(20),
+    queryFn: () => fetchPokemonList(),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 

@@ -35,11 +35,7 @@ const Nav = styled.nav`
 `;
 
 const Header: React.FC = () => {
-  const { token, setToken } = useAuth();
-
-  const handleLogout = () => {
-    setToken(null); // 로그아웃 되면 토큰은 null이 됩니다.
-  };
+  const { token, logout } = useAuth();
 
   return (
     <HeaderContainer>
@@ -47,13 +43,18 @@ const Header: React.FC = () => {
         <NavLink to="/">Pokemon Dex</NavLink>
       </Title>
       <Nav>
-        {!token && <NavLink to="/login">Login</NavLink>}
-        {!token && <NavLink to="/signup">Signup</NavLink>}
-        {token && <NavLink to="profile">Profile</NavLink>}
-        {token && (
-          <NavLink to="/" onClick={handleLogout}>
-            Logout
-          </NavLink>
+        {!token ? (
+          <Nav>
+            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/signup">Signup</NavLink>
+          </Nav>
+        ) : (
+          <Nav>
+            <NavLink to="/profile">Profile</NavLink>
+            <NavLink to="/" onClick={logout}>
+              Logout
+            </NavLink>
+          </Nav>
         )}
       </Nav>
     </HeaderContainer>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import {
   inputContainer as LoginContainer,
@@ -9,12 +10,20 @@ import {
   Button,
 } from "../styles/CommonStyles";
 import { login, LoginParams, AuthResponse } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
+  const { login: loginUser, setSuccessMessage } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const mutation = useMutation<AuthResponse, Error, LoginParams>({
     mutationFn: login,
+    onSuccess: (data) => {
+      loginUser(data.token);
+      setSuccessMessage("Login successful!");
+      navigate("/");
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -47,7 +56,6 @@ const Login: React.FC = () => {
         <Button type="submit">Login</Button>
       </form>
       {mutation.isError && <p>Error: {mutation.error.message}</p>}
-      {mutation.isSuccess && <p>Login successful!</p>}
     </LoginContainer>
   );
 };

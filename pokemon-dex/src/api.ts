@@ -29,7 +29,7 @@ export interface PokemonData {
 }
 
 export const fetchPokemonList = async (
-  limit: number = 20
+  limit: number = 150
 ): Promise<PokemonListResponse> => {
   const response = await api.get<PokemonListResponse>(
     `/pokemon?limit=${limit}`
