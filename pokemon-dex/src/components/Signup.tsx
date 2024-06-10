@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import styled from "styled-components";
 import {
   inputContainer as SignupContainer,
   pageTitle as Title,

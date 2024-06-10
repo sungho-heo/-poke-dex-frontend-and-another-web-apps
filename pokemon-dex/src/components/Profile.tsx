@@ -9,7 +9,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchFav = async () => {
       if (token) {
-        const response = await fetch("http://localhost:5000/api/fav", {
+        const response = await fetch("http://localhost:4000/api/fav", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
