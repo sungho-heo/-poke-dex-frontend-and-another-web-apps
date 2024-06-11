@@ -1,12 +1,22 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { fetchFav } from "../api/fav";
 
 // type 설정.
 interface AuthContextType {
   token: string | null;
+  setToken: (token: string | null) => void;
   login: (token: string) => void;
   logout: () => void;
   successMessage: string | null;
   setSuccessMessage: (message: string | null) => void;
+  fav: string[];
+  setFav: (fav: string[]) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,6 +26,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [token, setToken] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [fav, setFav] = useState<string[]>([]);
+
+  useEffect(() => {
+    const loadFav = async () => {
+      if (token) {
+        try {
+          const fetchedFav = await fetchFav(token);
+          setFav(fetchedFav);
+        } catch (err) {
+          console.error("Failed to fetch fav", err);
+        }
+      } else {
+        setFav([]);
+      }
+    };
+    loadFav();
+  }, [token]);
 
   const login = (token: string) => {
     setToken(token);
@@ -25,6 +52,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const logout = () => {
     setToken(null);
     setSuccessMessage("Logout successful!");
+    setFav([]);
   };
 
   return (
@@ -36,6 +64,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         logout,
         successMessage,
         setSuccessMessage,
+        fav,
+        setFav,
       }}
     >
       {children}

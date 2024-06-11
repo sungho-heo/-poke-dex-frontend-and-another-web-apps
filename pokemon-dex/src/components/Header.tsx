@@ -34,8 +34,13 @@ const Nav = styled.nav`
   gap: 10px;
 `;
 
+const Message = styled.div`
+  color: green;
+  margin-top: 10px;
+`;
+
 const Header: React.FC = () => {
-  const { token, logout } = useAuth();
+  const { token, logout, successMessage } = useAuth();
 
   return (
     <HeaderContainer>
@@ -57,6 +62,7 @@ const Header: React.FC = () => {
           </Nav>
         )}
       </Nav>
+      {successMessage && <Message>{successMessage}</Message>}
     </HeaderContainer>
   );
 };
