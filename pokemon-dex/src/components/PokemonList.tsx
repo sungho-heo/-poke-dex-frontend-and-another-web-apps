@@ -55,7 +55,7 @@ const FavoButton = styled.button<FavButtonProps>`
 // 포켓몬 데이터 가져오기 1세대 150번까지
 const PokemonList: React.FC = () => {
   const [searchPokemon, setSearchPokemon] = useState<string>("");
-  const { token, fav, setFav } = useAuth();
+  const { token, fav = [], setFav } = useAuth();
 
   const {
     data: listData,
@@ -85,15 +85,19 @@ const PokemonList: React.FC = () => {
 
   const addFavMutation = useMutation({
     mutationFn: (pokemonName: string) => addFav(token!, pokemonName),
-    onSuccess: (data) => {
-      setFav(Array.isArray(data.fav) ? data.fav : []);
+    onSettled: (data, error) => {
+      if (!error) {
+        setFav(Array.isArray(data?.user.fav) ? data.user.fav : []);
+      }
     },
   });
 
   const removeFavMutation = useMutation({
     mutationFn: (pokemonName: string) => removeFav(token!, pokemonName),
-    onSuccess: (data) => {
-      setFav(Array.isArray(data.fav) ? data.fav : []);
+    onSettled: (data, error) => {
+      if (!error) {
+        setFav(Array.isArray(data?.user.fav) ? data.user.fav : []);
+      }
     },
   });
 
@@ -134,7 +138,7 @@ const PokemonList: React.FC = () => {
               <PokemonCard key={index}>Error: {error.message}</PokemonCard>
             );
 
-          const isFav = fav.includes(data?.name || "");
+          const isFav = Array.isArray(fav) && fav.includes(data?.name || "");
 
           return (
             // data?해당 뜻은 포켓몬 api로부터 데이터를 못가져올경우 undifinded로 가져오게하기위해서 즉 에리가 발생하기위해서임.

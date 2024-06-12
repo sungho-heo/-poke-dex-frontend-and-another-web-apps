@@ -47,6 +47,7 @@ const Header: React.FC = () => {
       <Title>
         <NavLink to="/">Pokemon Dex</NavLink>
       </Title>
+      {successMessage && <Message>{successMessage}</Message>}
       <Nav>
         {!token ? (
           <Nav>
@@ -62,7 +63,6 @@ const Header: React.FC = () => {
           </Nav>
         )}
       </Nav>
-      {successMessage && <Message>{successMessage}</Message>}
     </HeaderContainer>
   );
 };

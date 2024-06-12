@@ -13,7 +13,7 @@ import { login, LoginParams, AuthResponse } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
-  const { login: loginUser, setSuccessMessage } = useAuth();
+  const { login: loginUser, setFav } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ const Login: React.FC = () => {
     mutationFn: login,
     onSuccess: (data) => {
       loginUser(data.token);
-      setSuccessMessage("Login successful!");
       navigate("/");
     },
   });
