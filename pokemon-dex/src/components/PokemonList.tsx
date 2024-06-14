@@ -85,24 +85,23 @@ const PokemonList: React.FC = () => {
 
   const addFavMutation = useMutation({
     mutationFn: (pokemonName: string) => addFav(token!, pokemonName),
-    onSettled: (data, error) => {
-      if (!error) {
-        setFav(Array.isArray(data?.user.fav) ? data.user.fav : []);
-      }
+    onSuccess: (data) => {
+      console.log("Add Fav Response:", data);
+      setFav(Array.isArray(data.fav) ? data.fav : []);
     },
   });
 
   const removeFavMutation = useMutation({
     mutationFn: (pokemonName: string) => removeFav(token!, pokemonName),
-    onSettled: (data, error) => {
-      if (!error) {
-        setFav(Array.isArray(data?.user.fav) ? data.user.fav : []);
-      }
+    onSuccess: (data) => {
+      console.log("Remove Fav Response:", data);
+      setFav(Array.isArray(data.fav) ? data.fav : []);
     },
   });
 
   const toggleFav = (name: string) => {
-    if (fav.includes(name)) {
+    console.log("Toggling fav for:", name);
+    if (Array.isArray(fav) && fav.includes(name)) {
       removeFavMutation.mutate(name);
     } else {
       addFavMutation.mutate(name);

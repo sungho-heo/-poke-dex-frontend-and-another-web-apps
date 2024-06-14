@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:4000/api";
+const API_URL = "http://localhost:4000/api/fav";
 
 export const fetchFav = async (token: string) => {
-  const response = await axios.get(`${API_URL}/fav`, {
+  const response = await axios.get(`${API_URL}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -12,9 +12,10 @@ export const fetchFav = async (token: string) => {
 };
 
 export const addFav = async (token: string, pokemonName: string) => {
+  console.log("Request to addFav with pokemonName:", pokemonName);
   const response = await axios.post(
     `${API_URL}/add`,
-    { name: pokemonName },
+    { pokemonName },
     {
       headers: {
         Authorization: `Bearer ${token}`,

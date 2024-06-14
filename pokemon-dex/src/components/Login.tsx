@@ -10,6 +10,7 @@ import {
   Button,
 } from "../styles/CommonStyles";
 import { login, LoginParams, AuthResponse } from "../api/auth";
+import { fetchFav } from "../api/fav";
 import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
@@ -19,7 +20,17 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const mutation = useMutation<AuthResponse, Error, LoginParams>({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      // token localStorage에 저장함.
+      localStorage.setItem("token", data.token);
+
+      // 사용자의 즐겨찾기 정보를 갖고옴.
+      const favData = await fetchFav(data.token);
+
+      // 즐겨찾기 정보 저장
+      setFav(favData);
+
+      // 토큰 설정후 홈으로 이동.
       loginUser(data.token);
       navigate("/");
     },
