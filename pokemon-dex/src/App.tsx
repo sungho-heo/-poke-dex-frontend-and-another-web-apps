@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import queryClient from "./queryClient";
@@ -9,9 +9,20 @@ import PokemonList from "./components/PokemonList";
 import PokemonDetail from "./components/PokemonDetail";
 import Header from "./components/Header";
 import Profile from "./components/Profile";
+import Notification from "./components/Notification";
 import { AuthProvider } from "./context/AuthContext";
 
 const App: React.FC = () => {
+  const [notification, setNotification] = useState<string | null>(null);
+
+  const showNotification = (message: string) => {
+    setNotification(message);
+  };
+
+  const handleNotificationClose = () => {
+    setNotification(null);
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* 라우터 설정. */}
@@ -20,6 +31,12 @@ const App: React.FC = () => {
           <div className="App">
             <GlobalStyle />
             <Header />
+            {notification && (
+              <Notification
+                message={notification}
+                onClose={handleNotificationClose}
+              />
+            )}
             <Routes>
               <Route path="/" element={<PokemonList />} />
               <Route path="/pokemon/:name" element={<PokemonDetail />} />
