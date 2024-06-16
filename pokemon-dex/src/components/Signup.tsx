@@ -12,8 +12,12 @@ import {
 } from "../styles/CommonStyles";
 import { useAuth } from "../context/AuthContext";
 
-const Signup: React.FC = () => {
-  const { login: singnupUser, setSuccessMessage } = useAuth();
+interface SignupProps {
+  showNotification: (message: string) => void;
+}
+
+const Signup: React.FC<SignupProps> = ({ showNotification }) => {
+  const { login: singnupUser } = useAuth();
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +27,7 @@ const Signup: React.FC = () => {
     mutationFn: signup,
     onSuccess: (data) => {
       singnupUser(data.token);
-      setSuccessMessage("Signup successful!");
+      showNotification("Signup successful!");
       navigate("/");
     },
   });

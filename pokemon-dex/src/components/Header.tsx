@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../context/AuthContext";
+import Notification from "./Notification";
 
 // css
 const HeaderContainer = styled.header`
@@ -34,20 +35,29 @@ const Nav = styled.nav`
   gap: 10px;
 `;
 
-const Message = styled.div`
-  color: green;
-  margin-top: 10px;
-`;
-
 const Header: React.FC = () => {
-  const { token, logout, successMessage } = useAuth();
+  const { token, logout } = useAuth();
+  const [notification, setNotification] = useState<string | null>(null);
+
+  const showNotification = (message: string) => {
+    setNotification(message);
+  };
+
+  const handleLogout = () => {
+    logout(showNotification);
+  };
 
   return (
     <HeaderContainer>
+      {notification && (
+        <Notification
+          message={notification}
+          onClose={() => setNotification(null)}
+        />
+      )}
       <Title>
         <NavLink to="/">Pokemon Dex</NavLink>
       </Title>
-      {successMessage && <Message>{successMessage}</Message>}
       <Nav>
         {!token ? (
           <Nav>
@@ -57,7 +67,7 @@ const Header: React.FC = () => {
         ) : (
           <Nav>
             <NavLink to="/profile">Profile</NavLink>
-            <NavLink to="/" onClick={logout}>
+            <NavLink to="/" onClick={handleLogout}>
               Logout
             </NavLink>
           </Nav>

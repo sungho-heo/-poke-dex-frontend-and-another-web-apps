@@ -40,8 +40,14 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<PokemonList />} />
               <Route path="/pokemon/:name" element={<PokemonDetail />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
+              <Route
+                path="/signup"
+                element={<Signup showNotification={showNotification} />}
+              />
+              <Route
+                path="/login"
+                element={<Login showNotification={showNotification} />}
+              />
               <Route path="/profile" element={<Profile />} />
             </Routes>
           </div>

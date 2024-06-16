@@ -13,7 +13,11 @@ import { login, LoginParams, AuthResponse } from "../api/auth";
 import { fetchFav } from "../api/fav";
 import { useAuth } from "../context/AuthContext";
 
-const Login: React.FC = () => {
+interface LoginProps {
+  showNotification: (message: string) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ showNotification }) => {
   const { login: loginUser, setFav } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,6 +37,7 @@ const Login: React.FC = () => {
       // 토큰 설정후 홈으로 이동.
       loginUser(data.token);
       navigate("/");
+      showNotification("Login successful!");
     },
   });
 

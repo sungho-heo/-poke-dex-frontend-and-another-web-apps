@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchFav } from "../api/fav";
 
 // type 설정.
@@ -12,9 +13,7 @@ interface AuthContextType {
   token: string | null;
   setToken: (token: string | null) => void;
   login: (token: string) => void;
-  logout: () => void;
-  successMessage: string | null;
-  setSuccessMessage: (message: string | null) => void;
+  logout: (showNotification?: (message: string) => void) => void;
   fav: string[];
   setFav: (fav: string[]) => void;
 }
@@ -25,8 +24,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [fav, setFav] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadFav = async () => {
@@ -46,13 +45,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = (token: string) => {
     setToken(token);
-    setSuccessMessage("Login successful!");
   };
 
-  const logout = () => {
+  const logout = (showNotification?: (message: string) => void) => {
     setToken(null);
-    setSuccessMessage("Logout successful!");
     setFav([]);
+    if (showNotification) {
+      showNotification("Logout successful!");
+    }
   };
 
   return (
@@ -62,8 +62,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         setToken,
         login,
         logout,
-        successMessage,
-        setSuccessMessage,
         fav,
         setFav,
       }}
