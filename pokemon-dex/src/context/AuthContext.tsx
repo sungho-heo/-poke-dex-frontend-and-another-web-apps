@@ -23,9 +23,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(() => {
+    return localStorage.getItem("token");
+  });
   const [fav, setFav] = useState<string[]>([]);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
+  }, [token]);
 
   useEffect(() => {
     const loadFav = async () => {
