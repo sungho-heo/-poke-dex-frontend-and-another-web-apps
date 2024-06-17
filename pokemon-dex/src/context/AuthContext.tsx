@@ -5,7 +5,6 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { useNavigate } from "react-router-dom";
 import { fetchFav } from "../api/fav";
 
 // type 설정.
@@ -52,8 +51,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     loadFav();
   }, [token]);
 
-  const login = (token: string) => {
+  // login시 사용자의 즐겨찾기를 불러옵니다.
+  const login = async (token: string) => {
     setToken(token);
+    try {
+      const fetchedFav = await fetchFav(token);
+      setFav(fetchedFav);
+    } catch (err) {
+      console.error("Failed to fetch fav on login", err);
+    }
   };
 
   const logout = (showNotification?: (message: string) => void) => {

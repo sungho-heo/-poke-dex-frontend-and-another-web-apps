@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useQuery,
   useQueries,
@@ -6,7 +6,7 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import { fetchPokemonList, fetchPokemon, PokemonData } from "../api";
-import { addFav, removeFav } from "../api/fav";
+import { addFav, removeFav, fetchFav } from "../api/fav";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
@@ -14,11 +14,6 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 import { Container, GridContainer } from "../styles/CommonStyles";
 import { useAuth } from "../context/AuthContext";
-
-// isLike type 정의
-interface FavButtonProps {
-  isFav: boolean;
-}
 
 // Css 세팅
 const SearchInput = styled.input`
@@ -43,12 +38,12 @@ const PokemonImage = styled.img`
   cursor: pointer;
 `;
 
-const FavoButton = styled.button<FavButtonProps>`
+const FavButton = styled.button<{ $isFav: boolean }>`
   border: none;
   background: none;
   width: 100%;
   cursor: pointer;
-  color: ${(props) => (props.isFav ? "gold" : "grey")};
+  color: ${(props) => (props.$isFav ? "gold" : "grey")};
   font-size: 1.5rem;
 `;
 
@@ -86,7 +81,6 @@ const PokemonList: React.FC = () => {
   const addFavMutation = useMutation({
     mutationFn: (pokemonName: string) => addFav(token!, pokemonName),
     onSuccess: (data) => {
-      console.log("Add Fav Response:", data);
       setFav(Array.isArray(data.fav) ? data.fav : []);
     },
   });
@@ -94,13 +88,11 @@ const PokemonList: React.FC = () => {
   const removeFavMutation = useMutation({
     mutationFn: (pokemonName: string) => removeFav(token!, pokemonName),
     onSuccess: (data) => {
-      console.log("Remove Fav Response:", data);
       setFav(Array.isArray(data.fav) ? data.fav : []);
     },
   });
 
   const toggleFav = (name: string) => {
-    console.log("Toggling fav for:", name);
     if (Array.isArray(fav) && fav.includes(name)) {
       removeFavMutation.mutate(name);
     } else {
@@ -113,6 +105,21 @@ const PokemonList: React.FC = () => {
         query.data?.name.toLowerCase().includes(searchPokemon.toLowerCase())
       )
     : pokemonQueries;
+
+  useEffect(() => {
+    const fetchInitialFav = async () => {
+      if (token) {
+        try {
+          const fetchedFav = await fetchFav(token);
+          setFav(fetchedFav);
+        } catch (err) {
+          console.error("Failed to fetch initial favs", err);
+        }
+      }
+    };
+
+    fetchInitialFav();
+  }, [token, setFav]);
 
   if (listLoading) return <Container>...Loading</Container>;
   if (listError instanceof Error)
@@ -142,12 +149,12 @@ const PokemonList: React.FC = () => {
           return (
             // data?해당 뜻은 포켓몬 api로부터 데이터를 못가져올경우 undifinded로 가져오게하기위해서 즉 에리가 발생하기위해서임.
             <PokemonCard key={data?.name}>
-              <FavoButton
-                isFav={isFav}
+              <FavButton
+                $isFav={isFav}
                 onClick={() => toggleFav(data?.name || "")}
               >
                 <FontAwesomeIcon icon={isFav ? solidStar : regularStar} />
-              </FavoButton>
+              </FavButton>
               <h2>{data?.name}</h2>
               <Link to={`/pokemon/${data?.name}`}>
                 <PokemonImage

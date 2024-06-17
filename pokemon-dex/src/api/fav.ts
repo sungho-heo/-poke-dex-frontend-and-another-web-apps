@@ -12,7 +12,6 @@ export const fetchFav = async (token: string) => {
 };
 
 export const addFav = async (token: string, pokemonName: string) => {
-  console.log("Request to addFav with pokemonName:", pokemonName);
   const response = await axios.post(
     `${API_URL}/add`,
     { pokemonName },
