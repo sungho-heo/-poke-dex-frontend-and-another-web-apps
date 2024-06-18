@@ -93,6 +93,7 @@ const PokemonList: React.FC = () => {
   });
 
   const toggleFav = (name: string) => {
+    console.log("Toggle for fav", name);
     if (Array.isArray(fav) && fav.includes(name)) {
       removeFavMutation.mutate(name);
     } else {
@@ -111,7 +112,7 @@ const PokemonList: React.FC = () => {
       if (token) {
         try {
           const fetchedFav = await fetchFav(token);
-          setFav(fetchedFav);
+          setFav(Array.isArray(fetchedFav) ? fetchedFav : []);
         } catch (err) {
           console.error("Failed to fetch initial favs", err);
         }
