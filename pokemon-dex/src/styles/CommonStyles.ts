@@ -17,6 +17,21 @@ export const GridContainer = styled.div`
   max-width: 1200px;
 `;
 
+// 포켓몬 카드
+export const PokemonCard = styled.div`
+  border: 2.5px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+`;
+
+export const PokemonImage = styled.img`
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+`;
+
 // login and signup page css
 export const inputContainer = styled.div`
   max-width: 400px;

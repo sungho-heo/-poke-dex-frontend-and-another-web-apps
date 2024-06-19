@@ -1,41 +1,57 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import {
+  GridContainer,
+  PokemonCard,
+  PokemonImage,
+} from "../styles/CommonStyles";
+import { PokemonData, fetchPokemon } from "../api";
 
 // user Profile
 const Profile: React.FC = () => {
-  const token = useAuth();
-  const [fav, setFav] = useState<string[]>([]);
+  const { token, fav } = useAuth();
+  const [pokemonData, setPokemonData] = useState<PokemonData[]>([]);
 
   useEffect(() => {
-    const fetchFav = async () => {
-      if (token) {
-        const response = await fetch("http://localhost:4000/api/fav", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setFav(data.fav);
+    const fetchPokemonData = async () => {
+      try {
+        // Fetch detailed pokemon data for each favorite
+        const pokemonDetailsPromises = fav.map((name) => fetchPokemon(name));
+        const pokemonDetails = await Promise.all(pokemonDetailsPromises);
+        setPokemonData(pokemonDetails);
+      } catch (error) {
+        console.error("Failed to fetch pokemon data", error);
       }
     };
-    fetchFav();
-  }, [token]);
+
+    if (token && fav.length > 0) {
+      fetchPokemonData();
+    }
+  }, [token, fav]);
+
   if (!token) {
-    return <p>Plz Signup</p>;
+    return <p>Please sign up or log in.</p>;
   }
   return (
-    <div>
+    <GridContainer>
       <h2>Your Poketmon</h2>
-      {fav.length > 0 ? (
-        <ul>
-          {fav.map((name) => (
-            <li key={name}>{name}</li>
-          ))}
-        </ul>
+      {pokemonData.length > 0 ? (
+        pokemonData.map((pokemon, index) => (
+          <PokemonCard key={index}>
+            <h3>{pokemon.name}</h3>
+            <PokemonImage
+              src={pokemon.sprites.front_default}
+              alt={pokemon.name}
+            />
+            <p>
+              Type: {pokemon.types.map((type) => type.type.name).join(", ")}
+            </p>
+          </PokemonCard>
+        ))
       ) : (
-        <p>You no Poketmon.</p>
+        <p>You have no Poketmon.</p>
       )}
-    </div>
+    </GridContainer>
   );
 };
 

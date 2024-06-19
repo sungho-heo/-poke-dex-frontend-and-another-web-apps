@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   useQuery,
   useQueries,
@@ -6,13 +6,18 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import { fetchPokemonList, fetchPokemon, PokemonData } from "../api";
-import { addFav, removeFav, fetchFav } from "../api/fav";
+import { addFav, removeFav } from "../api/fav";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
-import { Container, GridContainer } from "../styles/CommonStyles";
+import {
+  Container,
+  GridContainer,
+  PokemonCard,
+  PokemonImage,
+} from "../styles/CommonStyles";
 import { useAuth } from "../context/AuthContext";
 
 // Css 세팅
@@ -22,20 +27,6 @@ const SearchInput = styled.input`
   width: 100%;
   max-width: 400px;
   font-size: 16px;
-`;
-
-const PokemonCard = styled.div`
-  border: 2.5px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  width: 200px;
-  text-align: center;
-`;
-
-const PokemonImage = styled.img`
-  width: 150px;
-  height: 150px;
-  cursor: pointer;
 `;
 
 const FavButton = styled.button<{ $isFav: boolean }>`
@@ -56,7 +47,7 @@ const PokemonList: React.FC = () => {
     data: listData,
     error: listError,
     isLoading: listLoading,
-  } = useQuery({
+  }: UseQueryResult<{ results: { name: string }[] }> = useQuery({
     queryKey: ["pokemonList"],
     queryFn: () => fetchPokemonList(),
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -80,20 +71,19 @@ const PokemonList: React.FC = () => {
 
   const addFavMutation = useMutation({
     mutationFn: (pokemonName: string) => addFav(token!, pokemonName),
-    onSuccess: (data) => {
+    onSuccess: (data: { fav: string[] }) => {
       setFav(Array.isArray(data.fav) ? data.fav : []);
     },
   });
 
   const removeFavMutation = useMutation({
     mutationFn: (pokemonName: string) => removeFav(token!, pokemonName),
-    onSuccess: (data) => {
+    onSuccess: (data: { fav: string[] }) => {
       setFav(Array.isArray(data.fav) ? data.fav : []);
     },
   });
 
   const toggleFav = (name: string) => {
-    console.log("Toggle for fav", name);
     if (Array.isArray(fav) && fav.includes(name)) {
       removeFavMutation.mutate(name);
     } else {
@@ -106,21 +96,6 @@ const PokemonList: React.FC = () => {
         query.data?.name.toLowerCase().includes(searchPokemon.toLowerCase())
       )
     : pokemonQueries;
-
-  useEffect(() => {
-    const fetchInitialFav = async () => {
-      if (token) {
-        try {
-          const fetchedFav = await fetchFav(token);
-          setFav(Array.isArray(fetchedFav) ? fetchedFav : []);
-        } catch (err) {
-          console.error("Failed to fetch initial favs", err);
-        }
-      }
-    };
-
-    fetchInitialFav();
-  }, [token, setFav]);
 
   if (listLoading) return <Container>...Loading</Container>;
   if (listError instanceof Error)
@@ -144,7 +119,6 @@ const PokemonList: React.FC = () => {
             return (
               <PokemonCard key={index}>Error: {error.message}</PokemonCard>
             );
-
           const isFav = Array.isArray(fav) && fav.includes(data?.name || "");
 
           return (
