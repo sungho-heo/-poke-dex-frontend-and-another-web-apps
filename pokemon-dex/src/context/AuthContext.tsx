@@ -49,7 +49,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     loadFav();
   }, [token]);
 
-  // login시 사용자의 즐겨찾기를 불러옵니다.
   const login = async (token: string) => {
     setToken(token);
     try {

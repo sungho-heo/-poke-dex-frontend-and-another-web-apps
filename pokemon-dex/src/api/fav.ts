@@ -8,10 +8,16 @@ export const fetchFav = async (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data;
+  return response.data.fav;
 };
 
-export const addFav = async (token: string, pokemonName: string) => {
+export const addFav = async ({
+  token,
+  pokemonName,
+}: {
+  token: string;
+  pokemonName: string;
+}) => {
   const response = await axios.post(
     `${API_URL}/add`,
     { pokemonName },
@@ -24,7 +30,13 @@ export const addFav = async (token: string, pokemonName: string) => {
   return response.data;
 };
 
-export const removeFav = async (token: string, pokemonName: string) => {
+export const removeFav = async ({
+  token,
+  pokemonName,
+}: {
+  token: string;
+  pokemonName: string;
+}) => {
   const response = await axios.delete(`${API_URL}/remove/${pokemonName}`, {
     headers: {
       Authorization: `Bearer ${token}`,
