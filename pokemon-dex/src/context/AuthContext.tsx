@@ -5,13 +5,14 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import axios from "axios";
 import { fetchFav } from "../api/fav";
 
 // type 설정.
 interface AuthContextType {
   token: string | null;
   setToken: (token: string | null) => void;
-  login: (token: string) => void;
+  login: (token: string) => Promise<void>;
   logout: (showNotification?: (message: string) => void) => void;
   fav: string[];
   setFav: (fav: string[]) => void;
@@ -66,6 +67,23 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       showNotification("Logout successful!");
     }
   };
+
+  useEffect(() => {
+    const authAxios = axios.create();
+
+    const responseInterceptor = authAxios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.statuse === 401) {
+          logout();
+        }
+        return Promise.reject(error);
+      }
+    );
+    return () => {
+      authAxios.interceptors.response.eject(responseInterceptor);
+    };
+  }, []);
 
   return (
     <AuthContext.Provider
