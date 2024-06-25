@@ -29,25 +29,12 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
+      const timeLimit = new Date().getTime() + 60 * 60 * 1000; // 1시간후 만료.
+      localStorage.setItem("tokenLimit", timeLimit.toString());
     } else {
       localStorage.removeItem("token");
+      localStorage.removeItem("tokenLimit");
     }
-  }, [token]);
-
-  useEffect(() => {
-    const loadFav = async () => {
-      if (token) {
-        try {
-          const fetchedFav = await fetchFav(token);
-          setFav(fetchedFav);
-        } catch (err) {
-          console.error("Failed to fetch fav", err);
-        }
-      } else {
-        setFav([]);
-      }
-    };
-    loadFav();
   }, [token]);
 
   const login = async (token: string) => {
@@ -69,12 +56,40 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   useEffect(() => {
+    const checkToken = () => {
+      const timeLimit = localStorage.getItem("tokenLimit");
+      if (timeLimit && new Date().getTime() > Number(timeLimit)) {
+        logout();
+      }
+    };
+
+    const loadFav = async () => {
+      if (token) {
+        try {
+          const fetchedFav = await fetchFav(token);
+          setFav(fetchedFav);
+        } catch (err) {
+          console.error("Failed to fetch fav", err);
+        }
+      } else {
+        setFav([]);
+      }
+    };
+    checkToken();
+    loadFav();
+
+    const intervalId = setInterval(checkToken, 60 * 1000); // 1분마다 체크
+
+    return () => clearInterval(intervalId);
+  }, [token]);
+
+  useEffect(() => {
     const authAxios = axios.create();
 
     const responseInterceptor = authAxios.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response && error.response.statuse === 401) {
+        if (error.response && error.response.status === 401) {
           logout();
         }
         return Promise.reject(error);
