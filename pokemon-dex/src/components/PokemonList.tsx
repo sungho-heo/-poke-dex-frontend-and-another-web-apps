@@ -5,7 +5,12 @@ import {
   UseQueryResult,
   useMutation,
 } from "@tanstack/react-query";
-import { fetchPokemonList, fetchPokemon, PokemonData } from "../api";
+import {
+  fetchPokemonList,
+  fetchPokemon,
+  fetchPokemonSpecies,
+  PokemonData,
+} from "../api";
 import { addFav, removeFav } from "../api/fav";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -62,10 +67,17 @@ UseQueryResult가 해당 역할을 해줌.
   const pokemonQueries = useQueries({
     queries: (listData?.results || []).map((pokemon) => ({
       queryKey: ["pokemon", pokemon.name],
-      queryFn: () => fetchPokemon(pokemon.name),
+      queryFn: async () => {
+        const pokemonData = await fetchPokemon(pokemon.name);
+        const speciesData = await fetchPokemonSpecies(pokemon.name);
+        const koreaName =
+          speciesData.names.find((name) => name.language.name === "ko")?.name ||
+          pokemonData.name;
+        return { ...pokemonData, koreaName };
+      },
       staleTime: 1000 * 60 * 5, // 5 minutes
     })),
-  }) as UseQueryResult<PokemonData>[];
+  }) as UseQueryResult<PokemonData & { koreaName: string }>[];
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchPokemon(event.target.value);
@@ -132,11 +144,11 @@ UseQueryResult가 해당 역할을 해줌.
               >
                 <FontAwesomeIcon icon={isFav ? solidStar : regularStar} />
               </FavButton>
-              <h2>{data?.name}</h2>
+              <h2>{data?.koreaName}</h2>
               <Link to={`/pokemon/${data?.name}`}>
                 <PokemonImage
                   src={data?.sprites.front_default}
-                  alt={data?.name}
+                  alt={data?.koreaName}
                 />
               </Link>
               <p>

@@ -28,6 +28,17 @@ export interface PokemonData {
   types: PokemonType[];
 }
 
+interface Name {
+  language: {
+    name: string;
+  };
+  name: string;
+}
+
+interface SpeciesData {
+  names: Name[];
+}
+
 export const fetchPokemonList = async (
   limit: number = 150
 ): Promise<PokemonListResponse> => {
@@ -39,5 +50,13 @@ export const fetchPokemonList = async (
 
 export const fetchPokemon = async (name: string): Promise<PokemonData> => {
   const response = await api.get<PokemonData>(`/pokemon/${name}`);
+  return response.data;
+};
+
+// 포켓몬 이름 한글화 작업을 하기위한 spcies data.
+export const fetchPokemonSpecies = async (
+  name: string
+): Promise<SpeciesData> => {
+  const response = await api.get(`/pokemon-species/${name}`);
   return response.data;
 };
