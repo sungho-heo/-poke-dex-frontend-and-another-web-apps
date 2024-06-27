@@ -10,6 +10,7 @@ import {
   fetchPokemon,
   fetchPokemonSpecies,
   PokemonData,
+  fetchTypeData,
 } from "../api";
 import { addFav, removeFav } from "../api/fav";
 import styled from "styled-components";
@@ -73,7 +74,22 @@ UseQueryResult가 해당 역할을 해줌.
         const koreaName =
           speciesData.names.find((name) => name.language.name === "ko")?.name ||
           pokemonData.name;
-        return { ...pokemonData, koreaName };
+
+        // 타입의 한글 이름 가져오기
+        const typeWithKoreaNames = await Promise.all(
+          pokemonData.types.map(async (typeInfo) => {
+            const typeData = await fetchTypeData(typeInfo.type.url);
+            const koreaTypeName =
+              typeData.names.find((name) => name.language.name === "ko")
+                ?.name || typeInfo.type.name;
+            return {
+              ...typeInfo,
+              type: { ...typeInfo.type, name: koreaTypeName },
+            };
+          })
+        );
+
+        return { ...pokemonData, koreaName, types: typeWithKoreaNames };
       },
       staleTime: 1000 * 60 * 5, // 5 minutes
     })),

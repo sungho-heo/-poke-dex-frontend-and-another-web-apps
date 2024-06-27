@@ -5,6 +5,7 @@ const api = axios.create({
 });
 
 // 포켓몬 여러마리 데이터와 포켓몬의 상세 데이터 및 포켓몬 타입값의 타입 설정.
+
 interface PokemonListResponse {
   results: {
     name: string;
@@ -12,10 +13,14 @@ interface PokemonListResponse {
   }[];
 }
 
-export interface PokemonType {
-  type: {
-    name: string;
-  };
+interface Type {
+  name: string;
+  url: string;
+}
+
+interface PokemonTypeInfo {
+  slot: number;
+  type: Type;
 }
 
 export interface PokemonData {
@@ -25,7 +30,7 @@ export interface PokemonData {
   };
   height: number;
   weight: number;
-  types: PokemonType[];
+  types: PokemonTypeInfo[];
 }
 
 interface Name {
@@ -37,6 +42,18 @@ interface Name {
 
 interface SpeciesData {
   names: Name[];
+}
+
+// 타입 데이터 타입 정의
+interface TypeName {
+  language: {
+    name: string;
+  };
+  name: string;
+}
+
+interface TypeData {
+  names: TypeName[];
 }
 
 export const fetchPokemonList = async (
@@ -58,5 +75,11 @@ export const fetchPokemonSpecies = async (
   name: string
 ): Promise<SpeciesData> => {
   const response = await api.get(`/pokemon-species/${name}`);
+  return response.data;
+};
+
+// 타입 데이터 가져오기 함수
+export const fetchTypeData = async (url: string): Promise<TypeData> => {
+  const response = await axios.get(url);
   return response.data;
 };
