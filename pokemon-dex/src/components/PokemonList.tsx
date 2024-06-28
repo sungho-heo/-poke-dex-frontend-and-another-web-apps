@@ -5,6 +5,12 @@ import {
   UseQueryResult,
   useMutation,
 } from "@tanstack/react-query";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
+import { Link } from "react-router-dom";
+import Search from "./Search";
 import {
   fetchPokemonList,
   fetchPokemon,
@@ -13,11 +19,6 @@ import {
   fetchTypeData,
 } from "../api";
 import { addFav, removeFav } from "../api/fav";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
-import { Link } from "react-router-dom";
 import {
   Container,
   GridContainer,
@@ -26,15 +27,7 @@ import {
 } from "../styles/CommonStyles";
 import { useAuth } from "../context/AuthContext";
 
-// Css 세팅
-const SearchInput = styled.input`
-  padding: 10px;
-  margin: 20px 0;
-  width: 100%;
-  max-width: 400px;
-  font-size: 16px;
-`;
-
+// // Css 세팅
 const FavButton = styled.button<{ $isFav: boolean }>`
   border: none;
   background: none;
@@ -95,10 +88,6 @@ UseQueryResult가 해당 역할을 해줌.
     })),
   }) as UseQueryResult<PokemonData & { koreaName: string }>[];
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchPokemon(event.target.value);
-  };
-
   const addFavMutation = useMutation({
     mutationFn: addFav,
     onSuccess: (data: { fav: string[] }) => {
@@ -123,7 +112,7 @@ UseQueryResult가 해당 역할을 해줌.
 
   const filterPokemonQueries = searchPokemon
     ? pokemonQueries.filter((query) =>
-        query.data?.name.toLowerCase().includes(searchPokemon.toLowerCase())
+        query.data?.koreaName.includes(searchPokemon)
       )
     : pokemonQueries;
 
@@ -133,11 +122,9 @@ UseQueryResult가 해당 역할을 해줌.
 
   return (
     <Container>
-      <SearchInput
-        type="text"
-        placeholder="포켓몬 이름을 검색하세요."
-        value={searchPokemon}
-        onChange={handleSearch}
+      <Search
+        searchPokemon={searchPokemon}
+        setSearchPokemon={setSearchPokemon}
       />
       <GridContainer>
         {filterPokemonQueries.map((query, index) => {
