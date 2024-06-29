@@ -5,7 +5,7 @@ import queryClient from "./queryClient";
 import { createGlobalStyle } from "styled-components";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import PokemonList from "./components/PokemonList";
+import Home from "./components/Home";
 import PokemonDetail from "./components/PokemonDetail";
 import Header from "./components/Header";
 import Profile from "./components/Profile";
@@ -29,7 +29,9 @@ const App: React.FC = () => {
       <Router>
         <AuthProvider>
           <div className="App">
+            {/* 해당 프로젝트에서 사용하는 기반의 css스타일 작성.*/}
             <GlobalStyle />
+            {/* 공통 header */}
             <Header />
             {notification && (
               <Notification
@@ -38,7 +40,7 @@ const App: React.FC = () => {
               />
             )}
             <Routes>
-              <Route path="/" element={<PokemonList />} />
+              <Route path="/" element={<Home />} />
               <Route path="/pokemon/:name" element={<PokemonDetail />} />
               <Route
                 path="/signup"
