@@ -31,6 +31,7 @@ export interface PokemonData {
   height: number;
   weight: number;
   types: PokemonTypeInfo[];
+  koreaName: string;
 }
 
 interface Name {

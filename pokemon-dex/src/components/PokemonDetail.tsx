@@ -37,10 +37,10 @@ const PokemonDetail: React.FC = () => {
   return (
     <Container>
       <DetailCard>
-        <h2>{data?.name}</h2>
+        <h2>{data?.koreaName}</h2>
         <PokemonImage src={data?.sprites.front_default} alt={data?.name} />
-        <p>height: {data?.height}</p>
-        <p>weight: {data?.weight}</p>
+        <p>키: {data?.height}</p>
+        <p>몸무게: {data?.weight}</p>
         <p>
           Type: {data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
         </p>

@@ -155,7 +155,7 @@ UseQueryResult가 해당 역할을 해줌.
                 />
               </Link>
               <p>
-                Type:
+                타입:
                 {data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
               </p>
             </PokemonCard>
