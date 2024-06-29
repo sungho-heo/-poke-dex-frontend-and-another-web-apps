@@ -42,7 +42,7 @@ const PokemonDetail: React.FC = () => {
         <p>키: {data?.height}</p>
         <p>몸무게: {data?.weight}</p>
         <p>
-          Type: {data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
+          타입: {data?.types.map((typeInfo) => typeInfo.type.name).join(",")}
         </p>
       </DetailCard>
     </Container>

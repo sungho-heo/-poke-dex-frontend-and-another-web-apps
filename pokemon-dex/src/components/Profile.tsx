@@ -47,29 +47,29 @@ const Profile: React.FC = () => {
   }
   return (
     <Container>
-      <h2>Your Poketmon</h2>
+      <h2>즐겨찾기 포켓몬</h2>
       <GridContainer>
         {pokemonData.length > 0 ? (
           pokemonData.map((pokemon) => (
-            <PokemonCard key={pokemon.name}>
+            <PokemonCard key={pokemon.koreaName}>
               <FavButton $isFav={true} onClick={() => {}}>
                 <FontAwesomeIcon icon={solidStar} />
               </FavButton>
-              <h2>{pokemon.name}</h2>
-              <Link to={`/pokemon/${pokemon.name}`}>
+              <h2>{pokemon.koreaName}</h2>
+              <Link to={`/pokemon/${pokemon.koreaName}`}>
                 <PokemonImage
                   src={pokemon.sprites.front_default}
-                  alt={pokemon.name}
+                  alt={pokemon.koreaName}
                 />
               </Link>
               <p>
-                Type:
+                타입:
                 {pokemon.types.map((typeInfo) => typeInfo.type.name).join(",")}
               </p>
             </PokemonCard>
           ))
         ) : (
-          <p>You have no favorite Pokemon.</p>
+          <p>즐겨찾기한 포켓몬이 없습니다.</p>
         )}
       </GridContainer>
     </Container>
