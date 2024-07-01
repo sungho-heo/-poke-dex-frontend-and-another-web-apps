@@ -21,6 +21,7 @@ const Signup: React.FC<SignupProps> = ({ showNotification }) => {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const navigate = useNavigate();
 
   const mutation = useMutation<AuthResponse, Error, SignupParams>({
@@ -34,6 +35,10 @@ const Signup: React.FC<SignupProps> = ({ showNotification }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== password2) {
+      showNotification("Passwords do not match");
+      return;
+    }
     mutation.mutate({ nickname, email, password });
   };
 
@@ -66,6 +71,15 @@ const Signup: React.FC<SignupProps> = ({ showNotification }) => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="Password">Confirm Password</Label>
+          <Input
+            type="password"
+            placeholder="Confirm Password"
+            value={password2}
+            onChange={(e) => setPassword2(e.target.value)}
           />
         </FormGroup>
         <Button type="submit">Signup</Button>
