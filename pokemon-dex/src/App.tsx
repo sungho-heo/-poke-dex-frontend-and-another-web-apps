@@ -10,6 +10,7 @@ import PokemonDetail from "./components/PokemonDetail";
 import Header from "./components/Header";
 import Profile from "./components/Profile";
 import Notification from "./components/Notification";
+import Footer from "./components/Footer";
 import { AuthProvider } from "./context/AuthContext";
 
 const App: React.FC = () => {
@@ -55,6 +56,7 @@ const App: React.FC = () => {
           </div>
         </AuthProvider>
       </Router>
+      <Footer />
     </QueryClientProvider>
   );
 };
@@ -70,10 +72,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   :root{
-    max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem;
-
     text-align: center;
     line-height: 1.5;
     font-weight: 400;
