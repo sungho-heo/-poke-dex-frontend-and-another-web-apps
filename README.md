@@ -1,5 +1,9 @@
 # First
 
+## index
+
+### 각 module를 확인해보면 index.ts 파일이 존재하는데 index파일을 작성할 경우 기본적으로 index파일이 있는지 확인하는 Node.js에 의해서 main 파일이 존재x index.node를 찾는 규칙을 가지고있기때문에 index에 모든 모듈 파일을 import 하게되면 코드를 읽는게 가능하다. 가독성도 좋아진다.
+
 ## Greetings
 
 ### typescript use React.FC 타입 지정은 사용해도 되긴하나 defaultProps를 사용할때 인식을 못하기 때문에 사용하지 않는게 편하다고 생각한다. 불필요하게 코드 길이도 늘어나기도 하고.
