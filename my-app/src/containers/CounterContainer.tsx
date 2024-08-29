@@ -15,7 +15,10 @@ function CounterContainer() {
   };
 
   const onDecrease = () => {
-    dispatch(decrease());
+    if (count > 0) {
+      //count 값을 -1했을때 0보다 작을경우 -1이 되지않도록함.
+      dispatch(decrease());
+    }
   };
 
   const onIncreaseBy = (diff: number) => {
