@@ -23,7 +23,6 @@ const FooterLinks = styled.div`
 const Footer: React.FC = () => {
   return (
     <FooterContainer>
-      <FooterLinks>link</FooterLinks>
       <div>
         &copy; {new Date().getFullYear()} Sungho Heo. All rights reserved.
       </div>
